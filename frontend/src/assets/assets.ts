@@ -17,6 +17,14 @@ import heart_icon from "./heart_icon.svg";
 import star_icon from "./star_icon.svg";
 import redirect_icon from "./redirect_icon.svg";
 import star_dull_icon from "./star_dull_icon.svg";
+import teddy_1 from "./teddy-1.png";
+import teddy_2 from "./teddy-2.png";
+import teddy_3 from "./teddy-3.png";
+import teddy_6 from "./teddy-6.png";
+import teddy_7 from "./teddy-7.png";
+import teddy_bear_1 from "./teddy_bear_1.jpeg";
+import teddy_bear_2 from "./teddy_bear_2.jpeg";
+import teddy_bear_3 from "./teddy_bear_3.jpeg";
 
 export const assets = {
   logo,
@@ -38,4 +46,12 @@ export const assets = {
   star_icon,
   redirect_icon,
   star_dull_icon,
+  teddy_1,
+  teddy_2,
+  teddy_3,
+  teddy_6,
+  teddy_7,
+  teddy_bear_1,
+  teddy_bear_2,
+  teddy_bear_3
 };
