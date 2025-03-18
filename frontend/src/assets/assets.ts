@@ -25,6 +25,8 @@ import teddy_7 from "./teddy-7.png";
 import teddy_bear_1 from "./teddy_bear_1.jpeg";
 import teddy_bear_2 from "./teddy_bear_2.jpeg";
 import teddy_bear_3 from "./teddy_bear_3.jpeg";
+import money from "./money.png";
+import credit_card from "./credit-card.png";
 
 export const assets = {
   logo,
@@ -53,5 +55,23 @@ export const assets = {
   teddy_7,
   teddy_bear_1,
   teddy_bear_2,
-  teddy_bear_3
+  teddy_bear_3,
+  money,
+  credit_card
 };
+
+export const productsDummyData = [
+  {
+    "_id": "1",
+    "userId": "user_1",
+    "name": "Teddy",
+    "description": "",
+    "price": 499.99,
+    "offerPrice": 399.99,
+    "image": 
+      teddy_1,
+    "category": "Earphone",
+    "date": 1738667236865,
+    "__v": 0
+  }
+]
