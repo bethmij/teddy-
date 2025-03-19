@@ -1,0 +1,23 @@
+
+::-webkit-scrollbar {
+    width: 8px;  
+    height: 8px; 
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #E8C2A5;  
+    border-radius: 10px; 
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #F8F2EE; 
+    border-radius: 10px;  
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }

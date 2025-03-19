@@ -1,52 +1,31 @@
 import { Dialog } from '@mui/material';
 import { useAppContext } from "../context/AppContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddCard from './AddCard';
 import { assets } from '../assets/assets';
-
-const OrderSummary = () => {
-    
-  const { currency, router, getCartCount, getCartAmount } = useAppContext()
-  const [selectedAddress, setSelectedAddress] = useState<any>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+interface OrderProps{
+  cart:any
+  setPaymentForm: any
+  paymentForm:any
+  setSelectedAddress: any
+  selectedAddress:string
+  onSubmit:any
+}
+const OrderSummary = ({cart,paymentForm,selectedAddress,setPaymentForm,setSelectedAddress,onSubmit}:OrderProps) => {
+  const { getCartCount, getCartAmount, getShipCost, getTax } = useAppContext()
   const [isCardOpen, setIsCardOpen] = useState(false); 
   const [confirm, setConfirem] = useState(false);
-  const [paymentForm, setPaymentForm] = useState({
-    cardNumber: '',
-    cardholderName: '',
-    expiryMonth: '',
-    expiryYear: '',
-    cvv: ''
-  });
 
-  const [userAddresses, setUserAddresses] = useState<any>([{
-    id: "1",
-    userId: "user_2",
-    fullName: "user",
-    phoneNumber: "0123456789",
-    pincode: 654321,
-    area: "Main Road , 123 Street, G Block",
-    city: "City",
-    state: "State",
-  }]);
-
-//   const fetchUserAddresses = async () => {
-//     setUserAddresses(addressDummyData);
-//   }
-
-  const handleAddressSelect = (address:any) => {
-    setSelectedAddress(address);
-    setIsDropdownOpen(false);
+  const handleChange = (e:any) => {
+    const { value } = e.target;
+    setSelectedAddress(value);
   };
-
-  const createOrder = async () => {
-
-  }
-
-//   useEffect(() => {
-//      fetchUserAddresses();
-//   }, [])
-
+  useEffect(() => {
+    if(!paymentForm.cardNumber){
+      setConfirem(false)
+      return;
+    }
+    }, [paymentForm.cardNumber])
 
   return (
     <div className="w-full md:w-96 bg-[#F8F2EE]/70 p-5 rounded-2xl">
@@ -59,42 +38,16 @@ const OrderSummary = () => {
           <label className="text-base font-medium uppercase text-gray-500 block mb-2">
             Select Address
           </label>
-          <div className="relative inline-block w-full text-sm border border-gray-300">
-            <button
-              className="peer w-full text-left px-4 pr-2 py-2 bg-gray-300/5 text-gray-700 focus:outline-none"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              <span className='text-gray-600'>
-                {selectedAddress
-                  ? `${selectedAddress.fullName}, ${selectedAddress.area}, ${selectedAddress.city}, ${selectedAddress.state}`
-                  : "Select Address"}
-              </span>
-              <svg className={`w-5 h-5 inline float-right transition-transform duration-200 ${isDropdownOpen ? "rotate-0" : "-rotate-90"}`}
-                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#6B7280"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            {isDropdownOpen && (
-              <ul className="absolute w-full bg-white border border-gray-300 shadow-md mt-1 z-10 rounded-b-md">
-                {userAddresses.map((address:any, index:any) => (
-                  <li
-                    key={index}
-                    className="px-4 py-2 hover:bg-gray-500/10 cursor-pointer text-gray-500"
-                    onClick={() => handleAddressSelect(address)}
-                  >
-                    {address.fullName}, {address.area}, {address.city}, {address.state}
-                  </li>
-                ))}
-                <li
-                  onClick={() => router.push("/add-address")}
-                  className="px-4 py-1.5 bg-[#E8C2A5]/60 text-sm text-gray-600 hover:bg-[#E8C2A5] cursor-pointer text-center rounded-md"
-                >
-                  + Add New Address
-                </li>
-              </ul>
-            )}
+            <div className="relative inline-block w-full text-sm ">
+              <input
+                type="text"
+                id="address"
+                name="address"
+                value={selectedAddress}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E8C2A5] focus:border-transparent"
+              />
           </div>
         </div>
 
@@ -133,24 +86,24 @@ const OrderSummary = () => {
               Items <span className="font-medium text-orange-600"> {getCartCount()}</span>
             </p>
 
-            <p className="text-gray-500">{currency}{getCartAmount()}</p>
+            <p className="text-gray-500">$ {getCartAmount(cart)}</p>
           </div>
           <div className="flex justify-between">
             <p className=" text-gray-500">Shipping Fee</p>
-            <p className=" text-gray-500">Free</p>
+            <p className=" text-gray-500"> {getShipCost(cart) == 0 ? "Free": `$ ${getShipCost(cart)}`}</p>
           </div>
           <div className="flex justify-between">
-            <p className=" text-gray-500">Tax (2%)</p>
-            <p className=" text-gray-500">${currency}{Math.floor(getCartAmount() * 0.02)}</p>
+            <p className=" text-gray-500">Tax</p>
+            <p className=" text-gray-500">$ {Math.floor(getCartAmount(cart) * getTax(cart))}</p>
           </div>
           <div className="flex justify-between text-lg md:text-xl font-medium border-t border-t-gray-500/40 pt-3">
             <p className='text-gray-500'>Total</p>
-            <p className='text-gray-500'>${getCartAmount() + Math.floor(getCartAmount() * 0.02)}</p>
+            <p className='text-gray-500'>${getShipCost(cart) + getCartAmount(cart) + Math.floor(getCartAmount(cart) * getTax(cart))}</p>
           </div>
         </div>
       </div>
 
-      <button onClick={createOrder} className="w-full bg-[#E8C2A5]/60  text-gray-600 font-semibold py-3 mt-5 hover:bg-[#E8C2A5] rounded-md">
+      <button disabled={getCartCount() == 0} onClick={onSubmit} className={`w-full ${getCartCount() == 0 ? "bg-[#E8C2A5]/40 text-white" : "bg-[#E8C2A5]/80 hover:bg-[#E8C2A5] text-gray-600"} py-3 mt-5  rounded-md `}>
         Place Order
       </button>
 

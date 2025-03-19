@@ -3,9 +3,10 @@ import search_icon from "./search_icon.svg";
 import user_icon from "./user_icon.svg";
 import cart_icon from "./cart_icon.svg";
 import add_icon from "./add_icon.svg";
-import instagram_icon from "./instagram_icon.svg";
-import facebook_icon from "./facebook_icon.svg";
-import twitter_icon from "./twitter_icon.svg";
+import instagram_icon from "./instagram.png";
+import facebook_icon from "./facebook.png";
+import linkedin_icon from "./linkedin.png";
+import twitter_icon from "./twitter.png";
 import box_icon from "./box_icon.svg";
 import menu_icon from "./menu_icon.svg";
 import arrow_icon from "./arrow_icon.svg";
@@ -27,6 +28,15 @@ import teddy_bear_2 from "./teddy_bear_2.jpeg";
 import teddy_bear_3 from "./teddy_bear_3.jpeg";
 import money from "./money.png";
 import credit_card from "./credit-card.png";
+import map from "./map.png";
+import email from "./email.png";
+import call from "./call.png";
+import map_view from "./map_view.png";
+import image_error from "./image_error.png";
+import upload_area from "./upload_area.png";
+import order_icon from "./order_icon.svg";
+import product_list_icon from "./product_list_icon.svg";
+import profile from "./profile.png";
 
 export const assets = {
   logo,
@@ -37,6 +47,7 @@ export const assets = {
   instagram_icon,
   facebook_icon,
   twitter_icon,
+  linkedin_icon,
   box_icon,
   menu_icon,
   arrow_icon,
@@ -57,7 +68,16 @@ export const assets = {
   teddy_bear_2,
   teddy_bear_3,
   money,
-  credit_card
+  credit_card,
+  map,
+  call,
+  email,
+  map_view,
+  image_error,
+  upload_area,
+  order_icon,
+  product_list_icon,
+  profile
 };
 
 export const productsDummyData = [

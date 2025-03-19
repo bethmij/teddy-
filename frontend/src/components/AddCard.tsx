@@ -34,10 +34,11 @@ export default function AddCard({setPaymentForm, paymentForm, setReady}:CardProp
     
 
   return (
-    <div className="flex flex-col justify-center items-center gap-6 px-6 py-8 bg-[#F8F2EE]/70">
+    <div className="flex flex-col justify-center items-center gap-6 px-6 py-8 bg-[#E8C2A5]/20">
         <p className="text-2xl md:text-3xl font-medium text-[#895025]/50 ">
             Card <span className="text-gray-500">Information</span>
             </p>
+            <div className="w-28 h-0.5 bg-[#E8C2A5]"></div>
               <div className="space-y-4">
                 <div>
                   <label className="block mb-1 font-medium text-gray-700">Card Number</label>
@@ -59,7 +60,7 @@ export default function AddCard({setPaymentForm, paymentForm, setReady}:CardProp
                     name="cardholderName"
                     value={paymentForm.cardholderName}
                     onChange={handleInputChange}
-                    placeholder="John Doe"
+                    placeholder="Cardholder name"
                     className="w-full p-2 border rounded border-gray-300 focus:border-[#E8C2A5] focus:outline-none focus:ring-0"
                   />
                   

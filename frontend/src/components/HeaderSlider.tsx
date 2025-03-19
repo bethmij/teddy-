@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { assets } from "../assets/assets";
+import { useNavigate } from "react-router-dom";
 
 const HeaderSlider = () => {
   const sliderData = [
@@ -30,6 +31,7 @@ const HeaderSlider = () => {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -43,7 +45,7 @@ const HeaderSlider = () => {
   };
 
   return (
-    <div className="overflow-hidden relative w-full">
+    <div data-aos="zoom-in" className="overflow-hidden relative w-full">
       <div
         className="flex transition-transform duration-700 ease-in-out"
         style={{
@@ -56,15 +58,15 @@ const HeaderSlider = () => {
             className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#F8F2EE] py-8 md:px-14 px-5 mt-6 rounded-xl min-w-full"
           >
             <div className="md:pl-8 mt-10 md:mt-0 w-1/2">
-              <p className="md:text-base text-orange-600 pb-1">{slide.offer}</p>
-              <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
+              <p className="md:text-base text-orange-600 pb-1 ml-0.5">{slide.offer}</p>
+              <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold text-gray-600">
                 {slide.title}
               </h1>
               <div className="flex items-center mt-4 md:mt-6 ">
-                <button className="md:px-10 px-7 md:py-2.5 py-2 bg-[#E8C2A5] rounded-full text-[#895025] font-medium">
+                <button  onClick={()=>{navigate(`/shop`);}} className="md:px-10 px-7 md:py-2.5 py-2 bg-[#e8c2a5c7] rounded-full text-[#895025] hover:bg-[#E8C2A5] font-medium">
                   {slide.buttonText1}
                 </button>
-                <button className="group flex items-center gap-2 px-6 py-2.5 font-medium">
+                <button className="group flex items-center gap-2 px-6 py-2.5 font-medium text-gray-600">
                   {slide.buttonText2}
                   <img className="group-hover:translate-x-1 transition" src={assets.arrow_icon} alt="arrow_icon" />
                 </button>

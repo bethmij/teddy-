@@ -1,62 +1,92 @@
 import ProductCard from "../components/ProductCard";
-import { useState } from "react";
-import { assets } from "../assets/assets";
+import { useEffect, useState } from "react";
+import {ToastContainer } from "react-toastify";
+
+
+import api from "../api/api";
+import showToast from "../alert/alert";
+import { useAppContext } from "../context/AppContext";
+import Swal from "sweetalert2";
+import Loading from "../components/Loading";
 
 const Products = () => {
+      const { getUser, getRole } = useAppContext();
+      const [products, setProducts] = useState([]);
+      const [user, setUser] = useState<any>(null);
+      const [role, setRole] = useState<any>(null);
+      const [isLoading, setLoading] = useState(true);
 
-      const [products] = useState([
-        {
-          id: 1,
-          name: "Teddy 1",
-          description: "The cutest, most squeezable teddy bear for your little one",
-          rating: 4.5,
-          offerPrice: "99.99",
-          imgSrc: assets.teddy_1,
-        },
-        {
-          id: 2,
-          name: "Teddy 2",
-          description: "The cutest, most squeezable teddy bear for your little one",
-          rating: 4.5,
-          offerPrice: "329.99",
-          imgSrc: assets.teddy_1,
-        },
-        {
-          id: 3,
-          name: "Teddy 3",
-          description: "The cutest, most squeezable teddy bear for your little one",
-          rating: 4.5,
-          offerPrice: "799.99",
-          imgSrc: assets.teddy_1,
-        },
-        {
-          id: 4,
-          name: "Teddy 4",
-          description: "The cutest, most squeezable teddy bear for your little one",
-          rating: 4.5,
-          offerPrice: "349.99",
-          imgSrc: assets.teddy_1,
-        },
-        {
-          id: 5,
-          name: "Teddy 5",
-          description: "The cutest, most squeezable teddy bear for your little one",
-          rating: 4.5,
-          offerPrice: "499.99",
-          imgSrc: assets.teddy_1,
-        }]);
+      useEffect(() => {
+        setUser(getUser()); 
+        setRole(getRole()); 
+        getAllProducts(); 
+      }, []);
+      
+      const removeFromWishlist = (itemName: string, isInWishlist:boolean) => {
+        setProducts((prevProducts:any) =>
+          prevProducts.map((product:any) =>
+            product.itemName === itemName ? { ...product, isInWishlist: !isInWishlist } : product
+          )
+        );
+      };
+      
+        const getAllProducts = async ()=> {
+          setLoading(true);
+          try {
+            const response = await api.get(`/product/all/${getUser()}`);
+           if (response.status === 200) {   
+              setProducts(response.data.data)
+              setLoading(false);
+              return
+           } 
+            showToast('An unexpected error occurred',"error");
+            setLoading(false);
+         } catch (err) {
+          console.log(err)
+            showToast('Error getting Products',"error");
+            setLoading(false);
+         }
+        }
+
+      
+  const  wishlistClick = async (itemName:string,isInWishlist:boolean) => {
+    try {
+      
+        const response = await api.post('/wishlist',{
+          email: user,
+          item: itemName,
+          state: isInWishlist
+        });
+
+        if (response.status === 201 || response.status === 200) {  
+          removeFromWishlist(itemName,isInWishlist)         
+          Swal.fire({
+            title: response.data.message,
+            icon: "success"
+          });
+          return 
+        }
+      
+      } catch (err:any) {
+        Swal.fire({
+          title: err.response.data.message,
+          icon: "error"
+        });
+      }
+  }
 
     return (
         <>
 
             <div className="flex flex-col items-start px-6 md:px-16 lg:px-32">
-                <div className="flex flex-col items-end pt-12">
-                    <p className="text-2xl font-medium">All products</p>
+                <div data-aos="fade-right" className="flex flex-col items-end pt-12">
+                    <p className="text-2xl font-medium text-gray-600">All <span className="font-medium text-[#E8C2A5]">Products</span></p>
                     <div className="w-16 h-0.5 bg-[#E8C2A5] rounded-full"></div>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-12 pb-14 w-full">
-                    {products.map((product, index) => <ProductCard key={index} product={product} />)}
+                <div data-aos="zoom-in" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-12 pb-14 w-full">
+                {isLoading ? <Loading /> : products.map((product, index) => <ProductCard key={index} screen="products" product={product} wishlistClick={(name,isInWishlist)=>{wishlistClick(name,isInWishlist)}} user={user} role={role}/>) }
                 </div>
+                <ToastContainer className={"overflow-x-hidden"}/>
             </div>
 
         </>
